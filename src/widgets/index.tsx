@@ -31,6 +31,17 @@ async function onActivate(plugin: ReactRNPlugin) {
     },
   });
 
+  await plugin.app.registerWidget(
+    'right_sidebar',
+    WidgetLocation.RightSidebar,
+    {
+      dimensions: {
+        height: 'auto',
+        width: 350,
+      },
+    },
+  )
+
   // Show a toast notification to the user.
   await plugin.app.toast("I'm a toast!");
 
