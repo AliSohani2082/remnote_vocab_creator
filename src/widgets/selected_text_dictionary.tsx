@@ -1,5 +1,7 @@
 import { usePlugin, useTracker, SelectionType, renderWidget } from '@remnote/plugin-sdk';
+import { WordData } from "../models"
 import React from 'react'
+import { PreviewDefinitions } from '../components/PreviewDefinitions';
 
 function cleanSelectedText(s?: string) {
   return s?.trim()?.split(/(\s+)/)[0]?.replaceAll(/[^a-zA-Z]/g, '')
@@ -20,7 +22,7 @@ export function useDebounce<T>(value: T, msDelay: number) {
 
 function SelectedTextDictionary() {
   const plugin = usePlugin();
-  const [wordData, setWordData] = React.useState<string>();
+  const [wordData, setWordData] = React.useState<WordData>();
 
   const searchTerm = useDebounce(
     useTracker(async (reactivePlugin) => {
@@ -51,8 +53,15 @@ function SelectedTextDictionary() {
 
     getAndSetData();
   }, [searchTerm])
-
-  return <pre>{JSON.stringify(wordData, null, 2)}</pre>;
+  return (
+    <div className="min-h-[200px] max-h-[500px] overflow-y-scroll m-4">
+    {
+      wordData && (
+        <PreviewDefinitions wordData={wordData} onSelectDefinition={() => {}} />
+      )
+    }
+    </div>
+  )
 }
 
 renderWidget(SelectedTextDictionary);
